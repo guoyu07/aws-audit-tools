@@ -28,7 +28,12 @@ class SGReview
             })
             if instances.count > 0
                 instances.each do |instance|
-                    print instance.instance_id + "\n"
+                    print instance.instance_id
+                    instance.tags.each do |tag|
+                        if tag.key == "Name"
+                            print " (" + tag.value + ")\n"
+                        end
+                    end
                 end
             else
                 puts "\nNo instances in group"
