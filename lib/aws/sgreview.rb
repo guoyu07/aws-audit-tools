@@ -84,7 +84,7 @@ class SGReview
                     end
                 end
             else
-                puts "\nNo instances in group"
+                puts "No instances in group"
             end
 
             puts "\nELB Instanced assigned in Security Group"
@@ -113,8 +113,6 @@ class SGReview
                 puts "No Redshift instances in group"
             end
 
-            print "\n"
-
             puts "\nElastic Files Systems in Security Group"
 
             if efs_vpc_group[sg.id]
@@ -139,6 +137,9 @@ class SGReview
                         print range.cidr_ip + ", "
                     end
                     rule.user_id_group_pairs.each do |group|
+                        if group.peering_status 
+                            print group.user_id + "/"
+                        end
                         print group.group_id + ", "
                     end
                     if rule.ip_protocol == "-1"
@@ -154,13 +155,11 @@ class SGReview
                         port_range = "n/a"
                     end
 
+                    puts "Destination Port Range: " + port_range + " IP Protocol: " + rule.ip_protocol
 
-                    print "Destination Port Range: " + port_range + " IP Protocol: " + rule.ip_protocol
-
-                    print "\n"
                 end
             else
-                puts "\nNo rules"
+                puts "No rules"
             end
             puts "Outbound Rules\n"
             if sg.ip_permissions_egress.count > 0
@@ -170,6 +169,9 @@ class SGReview
                         print range.cidr_ip + ", "
                     end
                     rule.user_id_group_pairs.each do |group|
+                        if group.peering_status 
+                            print group.user_id + "/"
+                        end
                         print group.group_id + ", "
                     end
                     if rule.ip_protocol == "-1"
@@ -186,12 +188,11 @@ class SGReview
                     end
 
 
-                    print "Destination Port Range: " + port_range + " IP Protocol: " + rule.ip_protocol
+                    puts "Destination Port Range: " + port_range + " IP Protocol: " + rule.ip_protocol
 
-                    print "\n"
                 end
             else
-                puts "\nNo rules"
+                puts "No rules"
             end
         end
 
