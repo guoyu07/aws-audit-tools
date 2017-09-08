@@ -6,6 +6,7 @@ class SGReview
         ec2 = Aws::EC2::Resource.new()
         rds = Aws::RDS::Resource.new()
         efs = Aws::EFS::Client.new()
+        ec = Aws::ElastiCache::Client.new()
         
         rds_vpc_group = {}
         rds.db_instances().each do |instance|
@@ -25,6 +26,14 @@ class SGReview
                             end
                         end
                     end
+                end
+            end
+        end
+        ec_vpc_group = {}
+        ec.describe_cache_clusters().each do |clus|
+            clus.cache_clusters.each do |clu|
+                clu.security_groups.each do |ec_sg|
+                    (ec_vpc_group[ec_sg.security_group_id] ||= []) << clu.cache_cluster_id
                 end
             end
         end
@@ -70,6 +79,14 @@ class SGReview
                 puts efs_vpc_group[sg.id]
             else
                 puts "No EFS in group"
+            end
+
+            puts "\nElastiCache Clusters in Security Group"
+            
+            if ec_vpc_group[sg.id]
+                puts ec_vpc_group[sg.id]
+            else
+                puts "No ElastiCache clusters in group"
             end
 
             puts "\nInbound Rules\n"
