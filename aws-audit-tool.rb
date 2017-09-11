@@ -1,6 +1,7 @@
 require 'aws-sdk'
 require 'slop'
 require_relative 'lib/aws/sgreview'
+require_relative 'lib/aws/vpcroutereview'
 
 $options = Slop.parse do |o|
 	o.banner = "aws-audit-tool.rb Usage: "
@@ -19,8 +20,9 @@ end
 
 case $options[:operation]
 when 'sgreview'
-    sgr = SGReview.new()
-
+    SGReview.new()
+when 'vpcroutereview'
+    VPCRouteReview.new()
 when 'test'
     puts "Hello World!"
 end
