@@ -1,8 +1,10 @@
 require 'aws-sdk'
 require 'slop'
+require 'csv'
 require_relative 'lib/aws/sgreview'
 require_relative 'lib/aws/vpcroutereview'
 require_relative 'lib/aws/systeminventory'
+require_relative 'lib/aws/iam'
 
 $options = Slop.parse do |o|
 	o.banner = "aws-audit-tool.rb Usage: "
@@ -27,5 +29,6 @@ when 'vpcroutereview'
 when 'systeminventory'
     SystemInventory.new()
 when 'iam-credentialreport'
-    
+    iam = IAM.new()
+    iam.credentialreport
 end
