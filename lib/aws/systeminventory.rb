@@ -10,7 +10,7 @@ class SystemInventory
     def getEC2()
         ec2 = Aws::EC2::Client.new()
         puts "EC2 Instances"
-        puts "Instance ID\tInstance Name\tImage ID\tPrivate IP\tPublic IP\tVPC ID\tSubnet ID\tSecurity Groups\tTags"
+        puts "Instance ID\tInstance Name\tImage ID\tState\tPrivate IP\tPublic IP\tVPC ID\tSubnet ID\tSecurity Groups\tTags"
         ec2.describe_instances().reservations.each do |instances|
             instances.instances.each do |instance|
                 name = ''
@@ -19,7 +19,7 @@ class SystemInventory
                         name = tag.value
                     end
                 end
-                print instance.instance_id.to_s + "\t" + name.to_s + "\t" + instance.image_id.to_s + "\t" + instance.private_ip_address.to_s + "\t" + instance.public_ip_address.to_s + "\t" + instance.vpc_id.to_s + "\t" + instance.subnet_id.to_s + "\t"
+                print instance.instance_id.to_s + "\t" + name.to_s + "\t" + instance.image_id.to_s + "\t" + instance.state.name + "\t" + instance.private_ip_address.to_s + "\t" + instance.public_ip_address.to_s + "\t" + instance.vpc_id.to_s + "\t" + instance.subnet_id.to_s + "\t"
                 instance.security_groups.each do |sg|
                     print sg.group_id + " "
                 end
